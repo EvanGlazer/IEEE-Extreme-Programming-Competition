@@ -1,58 +1,3 @@
-Taco Stand
-
-Problem Statement
-
-Joe has been hired to make tacos at a series of baseball games. He wants to calculate the maximum number of tacos he can make based on the available ingredients. He always insists on fresh ingredients, so any leftover ingredients on a given day will be thrown away.
-
-His ingredients are:
-
-Taco shells - every taco gets exactly one of these
-
-Meat
-
-Rice
-
-Beans
-
-His recipe is to take one taco shell, then add exactly two of the ingredients: meat, rice, and beans. So, for example, one taco might have meat and rice, while another taco might be made with rice and beans. However, a taco cannot have two of the same ingredient. For example, Joe will never make a taco with two servings of meat.
-
-Your task is to write a program to calculate the maximum number of tacos Joe can make each day, given the amount of ingredients he will have.
-
-Input Format
-
-The first line of input is an integer n, 1 <= n <= 1000, specifying how many days Joe will be making tacos.
-
-The following n lines contain 4 space-separated integers in the format:
-
-s m r b
-
-where s is the number of shells available, m is the amount of meat, r is the amount of rice, and b is the amount of beans, each expressed in terms of the number of tacos they could make.
-
-Note: s, m, r, and b are all non-negative integers less than 109.
-
-Output Format
-
-The output file is exactly n lines long, each line containing an integer specifying the maximum number of tacos Joe can make with that day’s ingredients.
-
-Note: There is a newline character at the end of the last line of the output.
-
-Sample Input
-
-2
-5 3 4 1
-1 9 9 9
-Sample Output
-
-4
-1
-Explanation
-
-On the first day, Joe can make a total of 4 tacos - 3 meat and rice tacos and 1 rice and bean taco.
-
-On the second day, Joe only has one shell, so he can make 1 taco with any two of the ingredients.
-
-
-
 import java.io.*;
 import java.util.*;
 import java.text.*;
@@ -61,102 +6,56 @@ import java.util.regex.*;
 
 public class Solution {
 
+    public static int makeTacos(int t, int m, int r, int b, int numTacosMade)
+    {        
+        int numTacos = numTacosMade;
+        
+        if(t <= 0)
+        {
+            return numTacosMade;
+        }
+        else
+        {
+            numTacosMade++;
+        }
+        
+        if( (m > 0) && (r > 0) )
+        {
+            int temp = makeTacos(t-1, m-1, r-1, b, numTacosMade);
+            numTacos = (numTacos > temp) ? numTacos : temp;
+        }
+        
+        if( (m > 0) && (b > 0) )
+        {
+            int temp = makeTacos(t-1, m-1, r, b-1, numTacosMade);
+            numTacos = (numTacos > temp) ? numTacos : temp;
+        }
+        
+        if( (r > 0) && (b > 0) )
+        {
+            int temp = makeTacos(t-1, m, r-1, b-1, numTacosMade);
+            numTacos = (numTacos > temp) ? numTacos : temp;
+        }
+        
+        return numTacos;
+    }
+    
     public static void main(String[] args)
 	{
-		// Just place your input.txt file in the appropriate folder,
-		// and let this program do the rest.
-		CandyStore candy = new CandyStore("input.txt");
-	}
-}
-
-public class CandyStore
-{
-	public class Candy
-	{
-		int calories;
-		double price;
-		Candy(int c, double p)
-		{
-			calories = c;
-			price = p;
-		}
-
-	}
-	
-	public int pocket(double money, Candy[] store)
-	{
-		return pocket(money, store, store.length);
-	}
-	
-	public int pocket(double money, Candy[] store, int length)
-	{
-		//base cases
-		if(money == 0 || length == 0)
-		{
-			return 0;
-		}
-		
-		if(money >= store[length-1].price)
-		{
-			// If purchase isn't made
-			int a = pocket(money, store, length - 1);
-			// If purchase is made
-			int b = pocket(money - store[length-1].price, store, length) + store[length-1].calories;
-			// Whichever recursion brings the higher calorie count is chosen
-			int answer = Math.max(a, b);
-			return answer;
-		}
-		else
-		{
-			int answer = (pocket(money, store, length-1));
-			return answer;
-		}
-	}
-	
-	public CandyStore(String str)
-	{
-		try
-		{
-			Scanner scan = new Scanner(new File(str));
-		
-			while(scan.hasNext())  // Main loop: each iteration is a different scenario.
-			{
-				int n = 0;
-				double m = 0.00;
-				
-				n = scan.nextInt();  // Total number of choices.
-				m = scan.nextDouble(); // Total amount of money.
-				
-				Candy store[] = new Candy[n];
-				
-				if(n == 0 || m == 0) // This is an end of file scenario
-				{
-					if(n == 0)
-					{
-						System.out.println("The store is out of product (End of File).");
-						break;
-					}
-					else
-					{
-						System.out.println("Your pockets are empty.");
-						break;
-					}
-				}
-				
-				for(int i = 0; i < n; i++) // Read entire scenario from file.
-				{
-					int c = scan.nextInt();
-					double p = scan.nextDouble();
-					store[i] = new Candy(c, p);
-				}
-				System.out.println("You managed to buy " + pocket(m, store) + " total calories.");
-				
-			}
-			scan.close();
-		} 
-		catch(FileNotFoundException e)
-		{
-			System.out.println("Can't find the file you requested.\n\n");
-		}
+        Scanner sc = new Scanner(System.in);
+        int maxTacos = 0;
+        int n = sc.nextInt();
+        
+		for(int i = 0; i < n; n++)
+        {
+            int shells = sc.nextInt();
+            int meat = sc.nextInt();
+            int rice = sc.nextInt();
+            int beans = sc.nextInt();
+            
+            maxTacos = makeTacos(shells, meat, rice, beans, 0);
+            
+            System.out.println(maxTacos);
+        }
 	}
 }
