@@ -1,0 +1,44 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    public static int findRepLength(int count, String str)
+    {
+        String rep = originalString.substring(0, count+1);
+        System.out.println("-" + rep + "-");
+        String repPoss = originalString.substring(j, repIndexCount+j+1);
+        System.out.println("-" + repPoss + "-");
+        
+        if(rep.compareTo(repPoss) == 0)
+        {
+            System.out.println("Match");
+            findRepLength(int count, String str)
+        }
+        else
+        {
+            System.out.println("No Match");
+            repIndexCount++;
+        }
+    }
+        
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int numTests = sc.nextInt();
+        sc.nextLine();
+        
+        for(int i = 0; i < numTests; i++)
+        {
+            System.out.println("-" + i + "-");
+            String originalString = sc.nextLine();
+            int repIndexCount = ;
+            
+            
+            System.out.println(repIndexCount+1);
+        }
+    }
+}
