@@ -1,0 +1,95 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int numTestCases = sc.nextInt();
+        
+        for(int i = 0; i < numTestCases; i++)
+        {
+            int numWords = sc.nextInt();
+            String dictionary[] = new String[numWords];
+            int numDicStrings = sc.nextInt();
+            String dictionaryStrings[] = new String[numDicStrings];
+            int alphabetDic[][] = new int[numWords][26];
+            int alphabetDicString[][] = new int[numDicStrings][26];
+            
+            sc.nextLine();
+            
+            for(int j = 0; j < numWords; j++)
+            {
+                dictionary[j] = sc.nextLine();
+            }
+            for(int k = 0; k < numDicStrings; k++)
+            {
+                dictionaryStrings[k] = sc.nextLine();
+            }
+            
+            for(int m = 0; m < numWords; m++)
+            {
+                for(int n = 0; n < dictionary[m].length(); n++)
+                {
+                    int index = (int)(dictionary[m].charAt(n))-97;
+                    alphabetDic[m][index]++;
+                }
+            }
+            
+            
+            
+            
+            for(int p = 0; p < numDicStrings; p++)
+            {
+                for(int q = 0; q < dictionaryStrings[p].length(); q++)
+                {
+                    int index = (int)(dictionaryStrings[p].charAt(q))-97;
+                    alphabetDicString[p][index]++;
+                }
+            }
+            
+            
+            
+            for(int s = 0; s < numDicStrings; s++)
+            {
+                boolean isDistionaryString = false;
+                boolean isPerfectDictionaryString = true;
+                
+                for(int t = 0; t < numWords; t++)
+                {
+                    for(int v = 0; v < 26; v++)
+                    {
+                        if(alphabetDic[t][v] > alphabetDicString[s][v])
+                        {
+                            isPerfectDictionaryString = false;
+                            break;
+                        }
+                        if(v == 25)
+                        {
+                            isDistionaryString = true;
+                        }
+                    }
+                }
+                
+                if(isDistionaryString)
+                {
+                    if(isPerfectDictionaryString)
+                    {
+                        System.out.println("Yes Yes");
+                    }
+                    else
+                    {
+                        System.out.println("Yes No");
+                    }
+                }
+                else
+                {
+                    System.out.println("No " + "1");
+                }
+            }
+        }
+    }
+}
