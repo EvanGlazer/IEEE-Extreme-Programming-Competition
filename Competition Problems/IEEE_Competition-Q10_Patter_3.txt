@@ -6,22 +6,35 @@ import java.util.regex.*;
 
 public class Solution {
 
-    public static int findRepLength(int count, String str)
+    public static int findRepLength(int length, String str)
     {
-        String rep = originalString.substring(0, count+1);
-        System.out.println("-" + rep + "-");
-        String repPoss = originalString.substring(j, repIndexCount+j+1);
-        System.out.println("-" + repPoss + "-");
-        
-        if(rep.compareTo(repPoss) == 0)
+        if(length == str.length())
         {
-            System.out.println("Match");
-            findRepLength(int count, String str)
+            System.out.println("*" + 1 + "* " + length + " + " + str.length());
+            return length;
+        }
+        else if(str.length() % length != 0)
+        {
+            System.out.println("*" + 2 + "* " + (str.length() % length) );
+            return findRepLength(length+1, str);
         }
         else
         {
-            System.out.println("No Match");
-            repIndexCount++;
+            System.out.println("*" + 3 + "*");
+            int temp = length;
+            for(int i = 0; i < str.length()-length; i+=length)
+            {
+                String part1 = new String(str.substring(0, length));
+                System.out.println("~part1: " + part1 + "~");
+                String part2 = new String(str.substring(i, i+length));
+                System.out.println("~part2: " + part2 + "~");
+                if(part1.compareTo(part2) != 0)
+                {
+                    temp = findRepLength(length+1, str);
+                    break;
+                }
+            }
+            return temp;
         }
     }
         
@@ -33,12 +46,17 @@ public class Solution {
         
         for(int i = 0; i < numTests; i++)
         {
-            System.out.println("-" + i + "-");
             String originalString = sc.nextLine();
-            int repIndexCount = ;
             
+            if(originalString.length() == 0)
+            {
+                System.out.println(0);
+                break;
+            }
             
-            System.out.println(repIndexCount+1);
+            int repLength = findRepLength(1, originalString);
+            
+            System.out.println(repLength);
         }
     }
 }
